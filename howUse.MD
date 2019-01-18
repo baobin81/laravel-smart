@@ -36,7 +36,8 @@ laravel new
 ```
 composer create-project --prefer-dist laravel/laravel blog "5.5.*"
 ```
-
+>执行有点慢，耐心等待
+>
 3. 设置数据链接
  3.1 如果项目根目录没有.env 文件 则 cmd，进入cmd窗口，进入项目目录执行
 ```
@@ -75,7 +76,7 @@ DB_PASSWORD=
 
     `composer require dominator88/laravel-smart:dev-master`
 
-> 执行这一行命令不能报错，有可能laravel版本不对，这个工具依赖的版是5.5.*
+> 执行这一行命令可能报错，有可能laravel版本不对，这个工具依赖的版是5.5.*
 > 用laravel new blog 创建的是laravel最新版本的项目,所以用 composer create-project --prefer-dist laravel/laravel blog "5.5.*" 创建需要的版本
 
     
@@ -88,6 +89,17 @@ DB_PASSWORD=
     配置 config/backend.php,这里可以设置初始化超级管理员帐户,也可使用默认默认(不作 修改),在后面会提到默认配置的帐户名密码
     
     `php artisan smart:install`
+> 执行这句，报错Grenral error:1709 Index column size too large. The maximum column size is 767 bytes.(SQL: alter table `users` add unique 'users_email_unique'('emial'))
+> 解决这个问题:
+> 1.改变数据库的配置，这种方法试验了没有成功。
+> 2.尝试修改这个模块创建数据库的配置。
+>修改/database/migrations/2014_10_12_000000_create_users_table.php报错的表,unique字段，不超过190 180试验成功
+```
+
+ $table->string('username',180);
+```
+> initData success laravel-smart install success!出现这个提示，说明安装成功了
+
 
 为权限认证添加 模块,并设置为当前认证模型,  更改 confit/auth.php 文件
 
@@ -167,9 +179,14 @@ DB_PASSWORD=
 
    `php artisan smart:install 模块名`
 
+>有哪些模块？如何用？为什么这么用?
+
 执行上面命令后,会在app目录下生成对应模块
 
-### 接口说明
+>进入后台，后台的菜单点不了，前端的地址不对,怎么改？需要进入模块进行改
+
+
+### 接口说明(如何用？）
 --------
 
 > 接口uri 
